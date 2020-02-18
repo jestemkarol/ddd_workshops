@@ -22,4 +22,8 @@ Rails.configuration.to_prepare do
   #   bus.register(PrintInvoice, Invoicing::OnPrint.new)
   #   bus.register(SubmitOrder,  ->(cmd) { Ordering::OnSubmitOrder.new.call(cmd) })
   # end
+
+  Rails.configuration.event_store.tap do |store|
+    store.subscribe(Reservations::OnOrderSubmitted, to: [Ordering::OrderSubmitted])
+  end
 end
